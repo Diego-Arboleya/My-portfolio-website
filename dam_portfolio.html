@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>D.A.M – Diego Arboleya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Josefin+Sans:wght@600;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rust:  #a8442b;
+      --gold:  #f4b324;
+      --dark:  #1c191a;
+      --text:  #f6e7d8;
+      --nav-h: 72px;
+      --gap:   clamp(16px, 3vw, 40px);
+    }
+
+    html, body { height: 100%; scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: 'Josefin Sans', Helvetica, sans-serif;
+      overflow-x: hidden;
+    }
+
+    .title-font { font-family: 'Italiana', Georgia, serif; }
+
+    /* ─── HEADER ─── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 300;
+      background: var(--rust);
+      height: var(--nav-h);
+    }
+    .header-inner {
+      height: var(--nav-h);
+      padding: 0 var(--gap);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-family: 'Italiana', Georgia, serif;
+      font-weight: 900; font-size: 2.85rem;
+      color: var(--text); letter-spacing: 0.04em; text-decoration: none;
+    }
+    nav ul { list-style: none; display: flex; gap: clamp(1rem, 2.5vw, 2.2rem); }
+    nav a {
+      color: var(--text); text-decoration: none;
+      font-family: 'Josefin Sans', Helvetica, sans-serif;
+      font-size: clamp(0.75rem, 1vw, 0.95rem);
+      font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase;
+      transition: opacity 0.2s;
+    }
+    nav a:hover { opacity: 0.7; }
+
+    /* Hamburger */
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--text); border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none; position: fixed;
+      top: var(--nav-h); left: 0; right: 0; z-index: 299;
+      background: var(--rust);
+      padding: 0.8rem var(--gap) 1.2rem;
+      flex-direction: column; gap: 1rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: var(--text); text-decoration: none;
+      font-family: 'Josefin Sans', Helvetica, sans-serif;
+      font-size: 0.9rem; font-weight: 900;
+      letter-spacing: 0.12em; text-transform: uppercase;
+    }
+
+    /* ─── PAGE BODY ─── */
+    .page-body { padding-top: var(--nav-h); }
+
+    /* ─── HERO — fixed 420px, crops sides ─── */
+    .hero { width: 100%; height: 540px; overflow: hidden; }
+    .hero img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center 30%; display: block;
+    }
+    .hero-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(170deg, #3d1a0a 0%, #5c2510 40%, #2a0e05 100%);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(246,231,216,0.1);
+      font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase;
+    }
+
+    /* ─── MAIN WRAPPER ─── */
+    .main-wrapper {
+      padding: var(--gap);
+      padding-top: clamp(12px, 2vw, 24px);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ─── CARD ─── */
+    .card {
+      border: 2px solid var(--gold);
+      background: var(--dark);
+      padding: clamp(28px, 4vw, 60px) clamp(24px, 5vw, 64px);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ─── RIGHT ACCENT BAR ───
+       Absolute inside .main-wrapper.
+       Top: JS sets it to align with "What I do" title.
+       Touches right viewport edge.
+    ─── */
+    #accentRight {
+      position: absolute;
+      right: calc(-1 * var(--gap));
+      width: clamp(150px, 27vw, 360px);
+      height: clamp(22px, 2.8vw, 36px);
+      background: var(--rust);
+      z-index: 3;
+      /* top set by JS */
+    }
+
+    #diagTriangle {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: clamp(135px, 21vw, 300px);
+      height: auto;
+      z-index: 4;
+      pointer-events: none;
+      display: block;
+    }
+
+
+
+    /* ─── CONTENT ─── */
+    .hi { font-size: clamp(3.2rem, 8vw, 6.5rem); color: var(--text); line-height: 1; margin-bottom: 1.1rem; }
+
+    .intro {
+      font-size: clamp(1.1rem, 1.9vw, 1.35rem); font-weight: 700;
+      line-height: 1.65; color: var(--text); margin-right:0.1% ; margin-bottom: 2.8rem;
+    }
+
+    /* Shared style for all three section titles */
+    .section-title, .research-link, .contact-title {
+      font-family: 'Italiana', Georgia, serif;
+      font-size: clamp(1.25rem, 2.5vw, 1.7rem); color: var(--text);
+      text-decoration: underline; text-underline-offset: 5px; margin-bottom: 1rem;
+      display: block;
+      font-weight: 400;
+      line-height: 1.3;
+    }
+
+    .what-section { margin-bottom: 2.4rem; }
+
+    .body-text {
+      font-size: clamp(1.05rem, 1.8vw, 1.28rem); font-weight: 700;
+      line-height: 1.75; color: var(--text); margin-right:0.5% ; margin-bottom: 1.6rem;
+    }
+    .body-text em { font-style: italic; }
+
+    .research-btn {
+      display: inline-block; background: var(--rust); color: var(--text);
+      font-family: 'Josefin Sans', Helvetica, sans-serif;
+      font-size: clamp(0.88rem, 1.4vw, 1.1rem); font-weight: 700;
+      font-style: italic; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.7em 1.5em; border-radius: 6px; text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s; margin-bottom: 4rem;
+    }
+    .research-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+
+    .contact-label { font-size: clamp(1.05rem, 1.8vw, 1.28rem); font-weight: 700; color: var(--text); margin-bottom: 0.5rem; }
+    .contact-list {
+      list-style: disc; padding-left: 1.4rem;
+      font-size: clamp(1.05rem, 1.8vw, 1.28rem); font-weight: 700;
+      line-height: 2.1; color: var(--text);
+      padding-bottom: clamp(28px, 4vw, 60px);
+    }
+    .contact-list a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+    .contact-list a:hover { opacity: 0.75; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--text);
+      padding: 1rem var(--gap);
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+    footer p { font-family: 'Josefin Sans', Helvetica, sans-serif; font-size: 0.75rem; font-weight: 700; color: var(--dark); line-height: 1.75; }
+    footer a { color: var(--dark); text-decoration: underline; }
+
+    @media (max-width: 700px) {
+      nav ul { display: none; }
+      .hamburger { display: flex; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="logo">D.A.M</a>
+    <nav>
+      <ul>
+        <li><a href="3D.html">3D</a></li>
+        <li><a href="environment.html">Environment Art</a></li>
+        <li><a href="Tools.html">Tools</a></li>
+        <li><a href="shaders.html">Shaders</a></li>
+        <li><a href="mocap.html">Mocap</a></li>
+      </ul>
+    </nav>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="3D.html">3D</a>
+  <a href="environment.html">Environment Art</a>
+  <a href="Tools.html">Tools</a>
+  <a href="shaders.html">Shaders</a>
+  <a href="mocap.html">Mocap</a>
+</div>
+
+<div class="page-body">
+
+  <section class="hero">
+    <img src="hero_shot_image.png" alt="3D environment art render" />
+  </section>
+
+  <div class="main-wrapper" id="mainWrapper">
+
+    <!-- Right accent bar: no rotation, aligned with "What I do" -->
+    <div id="accentRight"></div>
+
+
+    <div class="card" id="card">
+      <h1 class="hi title-font">Hi!</h1>
+
+      <p class="intro">
+        My name is Diego, and I'm a technical artist specializing in engineering solutions for modern videogame pipelines.
+      </p>
+
+      <div class="what-section">
+        <span class="section-title title-font" id="whatTitle">What I do</span>
+      </div>
+
+      <p class="body-text">
+        I’m currently seeking roles in the game dev industry as a technical artist. I have hands on experience engineering custom tools &amp; solutions to optimize modern game production pipelines, with experience spanning environment art, real-time lighting, and tool &amp; shader development in Unreal Engine and Unity.
+      </p>
+      <p class="body-text">
+        I'm also experienced with motion capture workflows, from capture and data cleanup to in-engine implementation for gameplay and cinematics.
+      </p>
+      <p class="body-text">
+        My published thesis, <em>A Comparative Analysis of Lighting Systems for Unreal Engine 5</em>, examines UE5's lighting technologies and their impact on production pipelines, analyzing real-time performance, development costs, and technical trade-offs.
+      </p>
+
+      <span class="research-link title-font">Check out my research project here</span><br />
+      <a
+        href="https://sciencevalue.udit.es/tfg_videojuegos_tecnologia/1/"
+        target="_blank" rel="noopener noreferrer"
+        class="research-btn"
+      >A Comparative Analysis of Lighting Systems for Unreal Engine 5</a>
+
+      <span class="contact-title title-font">Hiring? Shoot me a message!</span>
+      <p class="contact-label">Contact info:</p>
+      <ul class="contact-list">
+        <li>email: <a href="/cdn-cgi/l/email-protection#5771746667676c717463616c71746e606c71746666636c71746e6f6c71746666666c717466676f6c71746667666c71746665666c71746e606c717463616c717466676e6c717461636c71746667646c717466676e6c71746e606c71746667626c717466676f6c717463616c71746e6e6c71746666666c717466676e6c">&#100;&#46;&#97;&#114;&#98;&#111;&#108;&#101;&#121;&#97;&#46;&#109;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></li>
+        <li id="linkedinItem">linkedin: <a href="https://www.linkedin.com/in/diego-arboleya-396b4321a/" target="_blank" rel="noopener noreferrer">linkedin.com/in/diego-arboleya-396b4321a/</a></li>
+      </ul>
+    </div>
+
+    <img id="diagTriangle" src="lower_triangle.png" alt="" aria-hidden="true" />
+
+  </div>
+
+  <footer id="siteFooter">
+    <p>Unless otherwise stated, the content on this site is the property of Diego Arboleya.</p>
+    <p>For any inquiries email <a href="/cdn-cgi/l/email-protection#86a0a5b7b6b6bda0a5b2b0bda0a5bfb1bda0a5b7b7b2bda0a5bfbebda0a5b7b7b7bda0a5b7b6bebda0a5b7b6b7bda0a5b7b4b7bda0a5bfb1bda0a5b2b0bda0a5b7b6bfbda0a5b0b2bda0a5b7b6b5bda0a5b7b6bfbda0a5bfb1bda0a5b7b6b3bda0a5b7b6bebda0a5b2b0bda0a5bfbfbda0a5b7b7b7bda0a5b7b6bfbd">&#100;&#46;&#97;&#114;&#98;&#111;&#108;&#101;&#121;&#97;&#46;&#109;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></li></p>
+  </footer>
+
+</div>
+
+<script>
+  /* ── Hamburger ── */
+  const hBtn  = document.getElementById('hamburger');
+  const hMenu = document.getElementById('mobileMenu');
+  hBtn.addEventListener('click', () => { hBtn.classList.toggle('open'); hMenu.classList.toggle('open'); });
+  hMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    hBtn.classList.remove('open'); hMenu.classList.remove('open');
+  }));
+
+  const accentR   = document.getElementById('accentRight');
+  const wrapper   = document.getElementById('mainWrapper');
+  const whatTitle = document.getElementById('whatTitle');
+
+  function updatePositions() {
+    const wRect = wrapper.getBoundingClientRect();
+    const tRect = whatTitle.getBoundingClientRect();
+    accentR.style.top    = (tRect.top - wRect.top) + 'px';
+    accentR.style.height = tRect.height + 'px';
+  }
+
+  window.addEventListener('load',   updatePositions);
+  window.addEventListener('resize', updatePositions);
+  window.addEventListener('scroll', updatePositions, { passive: true });
+</script>
+
+</body>
+</html>
