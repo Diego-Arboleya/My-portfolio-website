@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>D.A.M – Quiet Mode</title>
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Josefin+Sans:wght@600;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal:  #1a757b;
+      --green: #179267;
+      --dark:  #1c191a;
+      --text:  #f6e7d8;
+      --nav-h: 72px;
+      --gap:   clamp(16px, 3vw, 40px);
+    }
+
+    html, body { height: 100%; scroll-behavior: smooth; }
+    body { background: var(--dark); color: var(--text); font-family: 'Josefin Sans', Helvetica, sans-serif; overflow-x: hidden; }
+
+    /* ─── HEADER ─── */
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 300; background: var(--teal); height: var(--nav-h); }
+    .header-inner { height: var(--nav-h); padding: 0 var(--gap); display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-family: 'Italiana', Georgia, serif; font-weight: 600; font-size: 2.85rem; color: var(--text); letter-spacing: 0.04em; text-decoration: none; }
+    nav a { color: var(--text); text-decoration: none; font-family: 'Josefin Sans', Helvetica, sans-serif; font-size: clamp(0.75rem, 1vw, 0.95rem); font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase; transition: opacity 0.2s; }
+    nav a:hover { opacity: 0.7; }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu { display: none; position: fixed; top: var(--nav-h); left: 0; right: 0; z-index: 299; background: var(--teal); padding: 0.8rem var(--gap) 1.2rem; flex-direction: column; gap: 1rem; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: var(--text); text-decoration: none; font-family: 'Josefin Sans', Helvetica, sans-serif; font-size: 0.9rem; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    .page-body { padding-top: var(--nav-h); }
+    .main-wrapper { padding: var(--gap); padding-top: clamp(12px, 2vw, 24px); overflow: hidden; position: relative; }
+
+    /* ─── CARD ─── */
+    .card { border: 2px solid var(--green); background: var(--dark); padding: clamp(28px, 4vw, 60px) clamp(24px, 5vw, 64px); position: relative; z-index: 2; }
+
+    /* ─── ACCENT BAR ─── */
+    #accentRight { position: absolute; right: calc(-1 * var(--gap)); width: clamp(150px, 27vw, 360px); height: clamp(12px, 1.4vw, 20px); background: var(--teal); z-index: 3; pointer-events: none; }
+
+    /* ─── PAGE TITLE ─── */
+    .page-title { font-family: 'Italiana', Georgia, serif; font-size: clamp(2.2rem, 6vw, 4.5rem); color: var(--text); line-height: 1.05; margin-bottom: 1rem; font-weight: 400; }
+    .page-desc  { font-size: clamp(1.05rem, 1.8vw, 1.28rem); font-weight: 700; line-height: 1.75; color: var(--text); max-width: 820px; margin-bottom: 2.8rem; }
+
+    /* ─── SHADER SECTION ─── */
+    .shader-section { margin-bottom: 4rem; }
+    .shader-section:last-child { margin-bottom: 0; }
+
+    .section-title { font-family: 'Italiana', Georgia, serif; font-size: clamp(1.25rem, 2.5vw, 1.7rem); color: var(--text); text-decoration: underline; text-underline-offset: 5px; margin-bottom: 1rem; display: block; font-weight: 400; line-height: 1.3; }
+    .section-desc  { font-size: clamp(1.05rem, 1.8vw, 1.28rem); font-weight: 700; line-height: 1.75; color: var(--text); margin-right:0.1% ; margin-bottom: 1.6rem; }
+
+    /* ─── VIDEO EMBED ─── */
+    .video-wrap { width: 100%; aspect-ratio: 16/9; margin-bottom: 1.4rem; background: #000; }
+    .video-wrap iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+    /* ─── IMAGE GRID ─── */
+    .img-grid { display: grid; gap: clamp(8px, 1.2vw, 16px); margin-bottom: 1rem; }
+    .img-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+    .img-placeholder { width: 100%; aspect-ratio: 16/9; opacity: 0.9; border-radius: 2px; }
+    .img-placeholder2 { width: 100%; aspect-ratio: 16/8; opacity: 0.9; border-radius: 2px; }
+
+
+    /* ─── DIAGONAL TRIANGLE ─── */
+    #diagTriangle { position: absolute; bottom: 0; right: 0; width: clamp(135px, 21vw, 300px); height: auto; z-index: 4; pointer-events: none; display: block;transform: translate(50%,50%);  }
+
+    /* ─── FOOTER ─── */
+    footer { background: var(--text); padding: 1rem var(--gap); text-align: center; position: relative; z-index: 2; }
+    footer p { font-family: 'Josefin Sans', Helvetica, sans-serif; font-size: 0.75rem; font-weight: 700; color: var(--dark); line-height: 1.75; }
+    footer a { color: var(--dark); text-decoration: underline; }
+
+    @media (max-width: 700px) { nav { display: none; } .hamburger { display: flex; } }
+    @media (max-width: 900px) { #accentRight { display: none; } }
+    @media (max-width: 480px) { .img-grid.cols-2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="shaders.html" class="logo">D.A.M</a>
+    <nav><a href="shaders.html">Back</a></nav>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="shaders.html">Back</a>
+</div>
+
+<div class="page-body">
+  <div class="main-wrapper" id="mainWrapper">
+
+    <div id="accentRight"></div>
+
+    <div class="card" id="card">
+
+      <h1 class="page-title">QUIET MODE</h1>
+      <p class="page-desc">Lighting &amp; post process shaders created for unreal's EpicJam aimed to give the environment a retro look &amp; feel.</p>
+
+      <!-- ── Section 1: Lighting shaders ── -->
+      <div class="shader-section">
+        <span class="section-title">Lighting, post process and environment shaders</span>
+        <p class="section-desc">My work for this project consisted mainly in developing a post process shader that would aid in giving a retro look and feel to the game in combination with the props and meshes developed.</p>
+        <p class="section-desc">The first of these shaders is a post process shader created to give a pixelized look reminiscent of first and second generation 3D games, with the option of increasing or decreasing the pixelization and chromatic aberration as well as a black and white filter. </p>
+        <p class="section-desc">The second shader works in a material base and it’s aimed to give more depth and texture to the architectural modules. Since most of these modules and props have fairly simple textures, this shader takes the base albedo channel as a parameter and aplies  a gradient that gradually darkens the material by the amount and intensity chosen by the player, it also has the option to generate level-based Ambient Occlusion if necessary.</p>
+        <p class="section-desc">Finally, I was also in charge of determining the mood by setting the lighting. Since the environment is supposed to feel “grungy” and the props were inspired by furniture and elements from the 80´s and 90´s, I opted for warm dim lighting to give it that feel of night-time, as it was what worked best with the props and aesthetic that was designed previously.</p>
+        <div class="video-wrap">
+          <video controls preload="metadata" style="width:100%;height:100%;display:block;">
+            <source src="quietmode/VideoShader.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="img-grid cols-2">
+          <div class="img-placeholder">
+            <img src="/quietmode/render1.png" alt="3D environment art render" width=100%/>
+          </div>
+          <div class="img-placeholder">
+            <img src="/quietmode/render2.png" alt="3D environment art render"width=100%/>
+          </div>
+        </div>
+        <div class="img-grid cols-2">
+          <div class="img-placeholder">
+             <img src="/quietmode/render3.png" alt="3D environment art render" width=100%/>
+          </div>
+          <div class="img-placeholder">
+             <img src="/quietmode/render4.png" alt="3D environment art render" width=100%/>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Section 2: Post process shaders ── -->
+      <div class="shader-section"> 
+        <p class="section-desc">Lighting complexity and shader influence</p>    
+        <div class="img-grid cols-2">
+          <div class="img-placeholder2">
+             <img src="/quietmode/1unlit.png" alt="3D environment art render" width=100%/>
+          </div>
+          <div class="img-placeholder2">
+            <img src="/quietmode/4LightingComplexity.png" alt="3D environment art render" width=100%/>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <img id="diagTriangle" src="lower_sphere.png" alt="" aria-hidden="true" />
+
+  </div>
+
+  <footer>
+    <p>Unless otherwise stated, the content on this site is the property of Diego Arboleya.</p>
+    <p>For any inquiries email <a href="mailto:&#100;&#46;&#97;&#114;&#98;&#111;&#108;&#101;&#121;&#97;&#46;&#109;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#100;&#46;&#97;&#114;&#98;&#111;&#108;&#101;&#121;&#97;&#46;&#109;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></p>
+  </footer>
+</div>
+
+<script>
+  const hBtn  = document.getElementById('hamburger');
+  const hMenu = document.getElementById('mobileMenu');
+  hBtn.addEventListener('click', () => { hBtn.classList.toggle('open'); hMenu.classList.toggle('open'); });
+
+  const accentR = document.getElementById('accentRight');
+  const wrapper = document.getElementById('mainWrapper');
+  const MIN_GAP = 16;
+
+  function updatePositions() {
+    const wRect    = wrapper.getBoundingClientRect();
+    const card     = document.getElementById('card');
+    const cardRect = card.getBoundingClientRect();
+
+    const availableSpace = wRect.right - cardRect.right;
+    const maxBarWidth = Math.max(0, availableSpace - MIN_GAP);
+    accentR.style.width = maxBarWidth + 'px';
+
+    const s1 = document.querySelector('.section-title');
+    if (s1) {
+      const r = s1.getBoundingClientRect();
+      accentR.style.top = (r.top - wRect.top) + 'px';
+    }
+  }
+
+  window.addEventListener('load',   updatePositions);
+  window.addEventListener('resize', updatePositions);
+  window.addEventListener('scroll', updatePositions, { passive: true });
+</script>
+
+</body>
+</html>
