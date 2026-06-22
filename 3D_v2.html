@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>D.A.M – 3D Art</title>
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Josefin+Sans:wght@600;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal:   #1a757b;
+      --orange: #d44926;
+      --gold:   #f4b324;
+      --dark:   #1c191a;
+      --text:   #f6e7d8;
+      --nav-h:  72px;
+      --gap:    clamp(16px, 3vw, 40px);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--dark); color: var(--text); font-family: 'Josefin Sans', Helvetica, sans-serif; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* ─── HEADER ─── */
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 300; background: var(--text); height: var(--nav-h); }
+    .header-inner { height: var(--nav-h); padding: 0 var(--gap); display: flex; align-items: center; justify-content: space-between; }
+    nav ul { list-style: none; display: flex; gap: clamp(1rem, 2.5vw, 2.2rem); }
+    .logo { font-family: 'Italiana', Georgia, serif; font-weight: 600; font-size: 2.85rem; color: var(--dark); letter-spacing: 0.04em; text-decoration: none; }
+    nav a { color: var(--orange); text-decoration: none; font-family: 'Josefin Sans', Helvetica, sans-serif; font-size: clamp(0.75rem, 1vw, 0.95rem); font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase; transition: opacity 0.2s; text-shadow: 0.3px 0 0 currentColor, -0.3px 0 0 currentColor; }
+    nav a:hover { opacity: 0.7; }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--orange); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu { display: none; position: fixed; top: var(--nav-h); left: 0; right: 0; z-index: 299; background: var(--text); padding: 0.8rem var(--gap) 1.2rem; flex-direction: column; gap: 1rem; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: var(--orange); text-decoration: none; font-family: 'Josefin Sans', Helvetica, sans-serif; font-size: 0.9rem; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    /* ─── PAGE BODY ─── */
+    .page-body { padding-top: var(--nav-h); flex: 1; }
+    .main-wrapper { padding: var(--gap); padding-top: clamp(12px, 2vw, 24px); overflow-x: hidden; position: relative; }
+
+    /* ─── CARD ─── */
+    .card { border: 2px solid var(--gold); background: var(--dark); padding: clamp(28px, 4vw, 60px) clamp(24px, 5vw, 64px); position: relative; z-index: 2; }
+
+    /* ─── ACCENT BAR RIGHT ─── */
+    #accentRight { position: absolute; right: calc(-1 * var(--gap)); width: clamp(150px, 27vw, 360px); height: clamp(22px, 2.8vw, 36px); background: var(--orange); z-index: 3; }
+
+    /* ─── PAGE TITLE ─── */
+    .page-title { font-family: 'Italiana', Georgia, serif; font-size: clamp(3rem, 8vw, 6rem); color: var(--text); line-height: 1; margin-bottom: 2.4rem; font-weight: 400; }
+
+    /* ─── CAROUSEL ─── */
+    .carousel-outer {
+      position: relative;
+      width: 100%;
+    }
+
+    .carousel-track-wrap {
+      overflow: hidden;
+      width: 100%;
+    }
+
+  /*  .carousel-track {
+      display: flex;
+      gap: clamp(12px, 2vw, 28px);
+      transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+
+     Each card: fixed width so multiple are visible 
+    .carousel-item {
+      flex: 0 0 clamp(260px, 52vw, 580px);
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      cursor: pointer;
+    }*/
+    .carousel-track {
+  display: flex;
+  gap: clamp(12px, 2vw, 28px);
+  transition: transform 0.5s ease;
+  will-change: transform;
+}
+
+.carousel-item {
+  flex: 0 0 min(70vw, 520px);
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .carousel-item {
+    flex: 0 0 85vw;
+  }
+}
+
+    .carousel-item .c-img {
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      display: block;
+      border-radius: 2px;
+      transition: opacity 0.2s;
+    }
+    .carousel-item:hover .c-img { opacity: 0.8; }
+
+    .carousel-item .c-title {
+      font-family: 'Italiana', Georgia, serif;
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-weight: 400;
+      color: var(--text);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      margin-top: 0.7rem;
+      line-height: 1.2;
+    }
+
+    .carousel-item .c-desc {
+      font-size: clamp(0.85rem, 1.4vw, 1rem);
+      font-weight: 700;
+      color: var(--text);
+      opacity: 0.75;
+      margin-top: 0.35rem;
+      line-height: 1.5;
+    }
+
+    /* ─── CONTROLS ─── */
+    .carousel-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-top: 2rem;
+    }
+
+    .carousel-btn {
+      background: none;
+      border: 2px solid var(--gold);
+      color: var(--text);
+      font-family: 'Josefin Sans', Helvetica, sans-serif;
+      font-size: 1.1rem;
+      font-weight: 900;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, opacity 0.2s;
+      flex-shrink: 0;
+    }
+    .carousel-btn:hover { background: var(--gold); color: var(--dark); }
+    .carousel-btn:disabled { opacity: 0.25; cursor: default; }
+
+    .carousel-dots {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .carousel-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--text);
+      opacity: 0.3;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      border: none;
+      padding: 0;
+    }
+    .carousel-dot.active { opacity: 1; background: var(--gold); }
+
+    /* ─── DIAGONAL TRIANGLE ─── */
+    #diagTriangle { position: absolute; top: 0; right: 0; width: clamp(100px, 16vw, 240px); height: auto; z-index: 4; pointer-events: none; display: block; transform: rotate(-90deg); }
+
+    /* ─── FOOTER ─── */
+    footer { background: var(--text); padding: 1rem var(--gap); text-align: center; position: relative; z-index: 2; }
+    footer p { font-family: 'Josefin Sans', Helvetica, sans-serif; font-size: 0.75rem; font-weight: 700; color: var(--dark); line-height: 1.75; }
+    footer a { color: var(--dark); text-decoration: underline; }
+
+    @media (max-width: 700px) {
+      nav ul { display: none; }
+      .hamburger { display: flex; }
+      .carousel-item { flex: 0 0 clamp(220px, 78vw, 400px); }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">D.A.M</a>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="environment.html">Environment Art</a></li>
+        <li><a href="Tools.html">Tools</a></li>
+        <li><a href="shaders.html">Shaders</a></li>
+        <li><a href="mocap.html">Mocap</a></li>
+      </ul>
+    </nav>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="environment.html">Environment Art</a>
+  <a href="Tools.html">Tools</a>
+  <a href="shaders.html">Shaders</a>
+  <a href="mocap.html">Mocap</a>
+</div>
+
+<div class="page-body">
+  <div class="main-wrapper" id="mainWrapper">
+
+    <div id="accentRight"></div>
+
+    <div class="card" id="card">
+
+      <h1 class="page-title">3D ART</h1>
+
+      <div class="carousel-outer">
+        <div class="carousel-track-wrap">
+          <div class="carousel-track" id="carouselTrack">
+
+            <a href="3D_props.html" class="carousel-item">
+              <img class="c-img" src="thumbnails/thumbnail_props3D_square1.png" alt="Props" />
+              <span class="c-title">Props</span>
+              <span class="c-desc">Fully optimized &amp; game ready.</span>
+            </a>
+
+            <a href="3D_materials.html" class="carousel-item">
+              <img class="c-img" src="thumbnails/thumbnail_materials.png" alt="Materials" />
+              <span class="c-title">Materials</span>
+              <span class="c-desc"></span>
+            </a>
+
+            <a href="environment_lighting.html" class="carousel-item">
+              <img class="c-img" src="thumbnails/thumbnail_lighting.png" alt="Lighting" />
+              <span class="c-title">Lighting</span>
+              <span class="c-desc">Fully optimized &amp; game ready.</span>
+            </a>
+
+            <a href="environment_gameready.html" class="carousel-item">
+              <img class="c-img" src="environment/abandoned_plaza/plaza_general1.png" alt="Game-ready environments" />
+              <span class="c-title">Game-ready environments</span>
+              <span class="c-desc"></span>
+            </a>
+
+          </div>
+        </div>
+
+        <div class="carousel-controls">
+          <button class="carousel-btn" id="prevBtn" aria-label="Previous">&#8592;</button>
+          <div class="carousel-dots" id="carouselDots"></div>
+          <button class="carousel-btn" id="nextBtn" aria-label="Next">&#8594;</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p>Unless otherwise stated, the content on this site is the property of Diego Arboleya.</p>
+  <p>For any inquiries email <a href="mailto:&#100;&#46;&#97;&#114;&#98;&#111;&#108;&#101;&#121;&#97;&#46;&#109;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#100;&#46;&#97;&#114;&#98;&#111;&#108;&#101;&#121;&#97;&#46;&#109;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></p>
+</footer>
+
+<script>
+  /* ── Hamburger ── */
+  const hBtn  = document.getElementById('hamburger');
+  const hMenu = document.getElementById('mobileMenu');
+  hBtn.addEventListener('click', () => { hBtn.classList.toggle('open'); hMenu.classList.toggle('open'); });
+
+  /* ── Accent bar ── */
+  const accentR = document.getElementById('accentRight');
+  const wrapper = document.getElementById('mainWrapper');
+  function updatePositions() {
+    const wRect = wrapper.getBoundingClientRect();
+    const titleEl = document.querySelector('.page-title');
+    const tRect = titleEl.getBoundingClientRect();
+    accentR.style.top    = (tRect.top - wRect.top) + 'px';
+    accentR.style.height = tRect.height * 0.18 + 'px';
+  }
+  window.addEventListener('load',   updatePositions);
+  window.addEventListener('resize', updatePositions);
+  window.addEventListener('scroll', updatePositions, { passive: true });
+
+  /* ── Carousel ── */
+
+const track = document.getElementById('carouselTrack');
+const items = Array.from(track.querySelectorAll('.carousel-item'));
+
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const dotsWrap = document.getElementById('carouselDots');
+
+const TOTAL = items.length;
+
+let current = 0;
+let autoTimer;
+
+/* Crear puntos */
+
+items.forEach((_, i) => {
+
+  const dot = document.createElement('button');
+
+  dot.className =
+    'carousel-dot' +
+    (i === 0 ? ' active' : '');
+
+  dot.setAttribute(
+    'aria-label',
+    `Go to slide ${i + 1}`
+  );
+
+  dot.addEventListener('click', () => {
+    goTo(i);
+  });
+
+  dotsWrap.appendChild(dot);
+
+});
+
+/* Actualizar posición */
+
+function updateCarousel() {
+
+  const wrap = track.parentElement;
+
+  const item = items[current];
+
+  const wrapCenter =
+    wrap.clientWidth / 2;
+
+  const itemCenter =
+    item.offsetLeft +
+    item.offsetWidth / 2;
+
+  const offset =
+    wrapCenter - itemCenter;
+
+  track.style.transform =
+    `translateX(${offset}px)`;
+
+  dotsWrap
+    .querySelectorAll('.carousel-dot')
+    .forEach((dot, i) => {
+      dot.classList.toggle(
+        'active',
+        i === current
+      );
+    });
+
+}
+
+/* Cambiar slide */
+
+function goTo(index, auto = false) {
+
+  current =
+    (index + TOTAL) % TOTAL;
+
+  updateCarousel();
+
+  if (!auto) {
+    restartAutoPlay();
+  }
+
+}
+
+/* Flechas */
+
+prevBtn.addEventListener(
+  'click',
+  () => goTo(current - 1)
+);
+
+nextBtn.addEventListener(
+  'click',
+  () => goTo(current + 1)
+);
+
+/* Autoplay */
+
+function restartAutoPlay() {
+
+  clearInterval(autoTimer);
+
+  autoTimer = setInterval(() => {
+
+    goTo(current + 1, true);
+
+  }, 4000);
+
+}
+
+/* Swipe móvil */
+
+let startX = 0;
+
+track.addEventListener(
+  'pointerdown',
+  e => {
+    startX = e.clientX;
+  }
+);
+
+track.addEventListener(
+  'pointerup',
+  e => {
+
+    const delta =
+      e.clientX - startX;
+
+    if (delta > 50) {
+      goTo(current - 1);
+    }
+
+    if (delta < -50) {
+      goTo(current + 1);
+    }
+
+  }
+);
+
+/* Recentrar al redimensionar */
+
+window.addEventListener(
+  'resize',
+  updateCarousel
+);
+
+/* Inicializar */
+
+window.addEventListener(
+  'load',
+  () => {
+    updateCarousel();
+    restartAutoPlay();
+  }
+);
+  /* ── Carousel ── 
+  const track    = document.getElementById('carouselTrack');
+  const items    = Array.from(track.querySelectorAll('.carousel-item'));
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+  const dotsWrap = document.getElementById('carouselDots');
+  const TOTAL    = items.length;
+  let current    = 0;
+  let autoTimer;
+
+  /* Build dots 
+  items.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+    d.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(d);
+  });
+
+  function goTo(index) {
+    current = ((index % TOTAL) + TOTAL) % TOTAL;
+
+    /* Measure after layout 
+    requestAnimationFrame(() => {
+      const wrapRect  = track.parentElement.getBoundingClientRect();
+      const wrapW     = wrapRect.width;
+      const trackRect = track.getBoundingClientRect();
+      const itemRect  = items[current].getBoundingClientRect();
+
+      /* item center relative to track origin 
+      const itemCenterInTrack = (itemRect.left - trackRect.left) + itemRect.width / 2;
+      /* current translateX 
+      const currentTX = new DOMMatrix(getComputedStyle(track).transform).m41;
+      /* new offset so item center aligns with wrap center 
+      const newTX = -(itemCenterInTrack + currentTX - wrapW / 2 + currentTX);
+
+      /* clamp so we don't over-scroll 
+      const maxScroll = track.scrollWidth - wrapW;
+      const clamped   = Math.min(0, Math.max(-maxScroll, newTX));
+      track.style.transform = 'translateX(' + clamped + 'px)';
+    });
+
+    dotsWrap.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === TOTAL - 1;
+    resetAuto();
+  }
+
+  function resetAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => goTo(current === TOTAL - 1 ? 0 : current + 1), 4000);
+  }
+
+  prevBtn.addEventListener('click', () => goTo(current - 1));
+  nextBtn.addEventListener('click', () => goTo(current + 1));
+
+  /* Touch/swipe 
+  let startX = 0;
+  track.addEventListener('pointerdown', e => { startX = e.clientX; });
+  track.addEventListener('pointerup',   e => {
+    const diff = startX - e.clientX;
+    if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+  });
+
+  window.addEventListener('resize', () => goTo(current));
+  goTo(0);
+  */
+</script>
+
+</body>
+</html>
