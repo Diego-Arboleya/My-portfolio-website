@@ -1,0 +1,150 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Italiana&family=Josefin+Sans:wght@600;900&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--teal:#1a757b;--orange:#d44926;--gold:#f4b324;--dark:#1c191a;--text:#f6e7d8;}
+.demo{background:var(--dark);padding:2rem;border-radius:12px;}
+.carousel-outer{position:relative;width:100%;}
+.carousel-track-wrap{overflow:hidden;width:100%;}
+.carousel-track{display:flex;gap:clamp(30px,4vw,60px);transition:transform 0.5s ease;will-change:transform;}
+.carousel-item{flex:0 0 min(70%,520px);display:flex;flex-direction:column;text-decoration:none;cursor:pointer;}
+.c-img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;border-radius:2px;transition:opacity 0.2s;display:flex;align-items:center;justify-content:center;font-family:'Italiana',serif;font-size:3rem;color:#f6e7d8;}
+.carousel-item:hover .c-img{opacity:0.8;}
+.c-title{font-family:'Italiana',Georgia,serif;font-size:clamp(1.5rem,3vw,2.3rem);font-weight:400;color:var(--text);text-decoration:underline;text-underline-offset:4px;margin-top:0.7rem;line-height:1.2;}
+.c-desc{font-size:clamp(0.85rem,1.4vw,1rem);font-weight:700;color:var(--text);opacity:0.75;margin-top:0.35rem;line-height:1.5;}
+.carousel-controls{display:flex;align-items:center;justify-content:center;gap:1.2rem;margin-top:2rem;}
+.carousel-btn{background:none;border:2px solid var(--gold);color:var(--text);font-size:1.1rem;font-weight:900;width:40px;height:40px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;flex-shrink:0;}
+.carousel-btn:hover{background:var(--gold);color:var(--dark);}
+.carousel-dots{display:flex;gap:0.5rem;}
+.carousel-dot{width:8px;height:8px;border-radius:50%;background:var(--text);opacity:0.3;cursor:pointer;transition:opacity 0.2s;border:none;padding:0;}
+.carousel-dot.active{opacity:1;background:var(--gold);}
+</style>
+
+<div class="demo">
+  <div class="carousel-outer">
+    <div class="carousel-track-wrap">
+      <div class="carousel-track" id="carouselTrack">
+        <a class="carousel-item"><div class="c-img" style="background:#1a757b;">Props</div><span class="c-title">Props</span><span class="c-desc">Fully optimized &amp; game ready.</span></a>
+        <a class="carousel-item"><div class="c-img" style="background:#d44926;">Materials</div><span class="c-title">Materials</span><span class="c-desc">PBR workflows.</span></a>
+        <a class="carousel-item"><div class="c-img" style="background:#7b4a1a;">Lighting</div><span class="c-title">Lighting</span><span class="c-desc">Fully optimized &amp; game ready.</span></a>
+        <a class="carousel-item"><div class="c-img" style="background:#1a3d7b;">Environments</div><span class="c-title">Game-ready environments</span><span class="c-desc"></span></a>
+      </div>
+    </div>
+    <div class="carousel-controls">
+      <button class="carousel-btn" id="prevBtn">&#8592;</button>
+      <div class="carousel-dots" id="carouselDots"></div>
+      <button class="carousel-btn" id="nextBtn">&#8594;</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const track    = document.getElementById('carouselTrack');
+const dotsWrap = document.getElementById('carouselDots');
+const prevBtn  = document.getElementById('prevBtn');
+const nextBtn  = document.getElementById('nextBtn');
+
+const realItems = Array.from(track.querySelectorAll('.carousel-item'));
+const TOTAL     = realItems.length;
+
+// clon del primero al final, clon del último al principio
+const firstClone = realItems[0].cloneNode(true);
+const lastClone  = realItems[TOTAL - 1].cloneNode(true);
+track.appendChild(firstClone);
+track.insertBefore(lastClone, track.firstChild);
+
+const slides = Array.from(track.querySelectorAll('.carousel-item'));
+
+let current = 1;
+let locked  = false;
+let autoTimer;
+
+realItems.forEach((_, i) => {
+  const d = document.createElement('button');
+  d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+  d.setAttribute('aria-label', `Go to slide ${i + 1}`);
+  d.addEventListener('click', () => goTo(i + 1));
+  dotsWrap.appendChild(d);
+});
+
+function getOffset() {
+  const wrap       = track.parentElement;
+  const item       = slides[current];
+  const wrapCenter = wrap.clientWidth / 2;
+  const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+  return wrapCenter - itemCenter;
+}
+
+function updateDots() {
+  const realIdx = (current - 1 + TOTAL) % TOTAL;
+  dotsWrap.querySelectorAll('.carousel-dot')
+    .forEach((d, i) => d.classList.toggle('active', i === realIdx));
+}
+
+function setPosition(animate) {
+  track.style.transition = animate ? 'transform 0.5s ease' : 'none';
+  track.style.transform  = `translateX(${getOffset()}px)`;
+  updateDots();
+}
+
+track.addEventListener('transitionend', (e) => {
+  if (e.propertyName !== 'transform') return;
+
+  // llegamos al clon del último (yendo hacia atrás desde slide 1)
+  if (current === 0) {
+    track.style.transition = 'none';
+    current = TOTAL;
+    track.style.transform = `translateX(${getOffset()}px)`;
+    updateDots();
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      track.style.transition = 'transform 0.5s ease';
+      locked = false;
+    }));
+  // llegamos al clon del primero (yendo hacia adelante desde slide 4)
+  } else if (current === TOTAL + 1) {
+    track.style.transition = 'none';
+    current = 1;
+    track.style.transform = `translateX(${getOffset()}px)`;
+    updateDots();
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      track.style.transition = 'transform 0.5s ease';
+      locked = false;
+    }));
+  } else {
+    locked = false;
+  }
+});
+
+function goTo(idx, auto = false) {
+  if (locked) return;
+  locked  = true;
+  current = idx;
+  setPosition(true);
+  if (!auto) resetAuto();
+}
+
+prevBtn.addEventListener('click', () => goTo(current - 1));
+nextBtn.addEventListener('click', () => goTo(current + 1));
+
+function resetAuto() {
+  clearInterval(autoTimer);
+  autoTimer = setInterval(() => goTo(current + 1, true), 3000);
+}
+
+let startX = 0;
+track.addEventListener('pointerdown', e => { startX = e.clientX; });
+track.addEventListener('pointerup',   e => {
+  const delta = e.clientX - startX;
+  if (delta > 50)  goTo(current - 1);
+  if (delta < -50) goTo(current + 1);
+});
+
+window.addEventListener('resize', () => setPosition(false));
+
+setPosition(false);
+requestAnimationFrame(() => requestAnimationFrame(() => {
+  track.style.transition = 'transform 0.5s ease';
+  locked = false;
+  resetAuto();
+}));
+</script>

@@ -49,7 +49,7 @@
     #accentRight { position: absolute; right: calc(-1 * var(--gap)); width: clamp(150px, 27vw, 360px); height: clamp(22px, 2.8vw, 36px); background: var(--orange); z-index: 3; }
 
     /* ─── PAGE TITLE ─── */
-    .page-title { font-family: 'Italiana', Georgia, serif; font-size: clamp(3rem, 8vw, 6rem); color: var(--text); line-height: 1; margin-bottom: 2.4rem; font-weight: 400; }
+    .page-title { font-family: 'Italiana', Georgia, serif; font-size: clamp(2rem, 5vw, 4rem); color: var(--text); line-height: 1; margin-bottom: 2.4rem; font-weight: 400; }
 
     /* ─── CAROUSEL ─── */
     .carousel-outer {
@@ -60,6 +60,7 @@
     .carousel-track-wrap {
       overflow: hidden;
       width: 100%;
+
     }
 
   /*  .carousel-track {
@@ -79,9 +80,11 @@
     }*/
     .carousel-track {
   display: flex;
-  gap: clamp(12px, 2vw, 28px);
+  gap:clamp(30px, 4vw, 60px);
   transition: transform 0.5s ease;
   will-change: transform;
+
+
 }
 
 .carousel-item {
@@ -110,7 +113,7 @@
 
     .carousel-item .c-title {
       font-family: 'Italiana', Georgia, serif;
-      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-size: clamp(1.5rem, 3vw, 2.3rem);
       font-weight: 400;
       color: var(--text);
       text-decoration: underline;
@@ -243,7 +246,7 @@
             </a>
 
             <a href="environment_gameready.html" class="carousel-item">
-              <img class="c-img" src="environment/abandoned_plaza/plaza_general1.png" alt="Game-ready environments" />
+              <img class="c-img" src="thumbnails/plaza_grafitti_square.png" alt="Game-ready environments" />
               <span class="c-title">Game-ready environments</span>
               <span class="c-desc"></span>
             </a>
@@ -265,9 +268,9 @@
 
 <footer>
   <p>Unless otherwise stated, the content on this site is the property of Diego Arboleya.</p>
-  <p>For any inquiries email <a href="mailto:&#100;&#46;&#97;&#114;&#98;&#111;&#108;&#101;&#121;&#97;&#46;&#109;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#100;&#46;&#97;&#114;&#98;&#111;&#108;&#101;&#121;&#97;&#46;&#109;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></p>
+  <p>For any inquiries email <a href="mailto:d.arboleya.m@gmail.com">&#100;&#46;&#97;&#114;&#98;&#111;&#108;&#101;&#121;&#97;&#46;&#109;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></p>
 </footer>
-
+//scripthamburguesa
 <script>
   /* ── Hamburger ── */
   const hBtn  = document.getElementById('hamburger');
@@ -288,21 +291,28 @@
   window.addEventListener('resize', updatePositions);
   window.addEventListener('scroll', updatePositions, { passive: true });
 
-  /* ── Carousel ── */
+  /* ── Carousel 2── 
 
-const track = document.getElementById('carouselTrack');
+/*const track = document.getElementById('carouselTrack');
 const items = Array.from(track.querySelectorAll('.carousel-item'));
+/*--infinite--
+const firstClone = items[0].cloneNode(true);
+const lastClone = items[items.length - 1].cloneNode(true);
 
+track.appendChild(firstClone);
+track.insertBefore(lastClone, track.firstChild);
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const dotsWrap = document.getElementById('carouselDots');
 
+//const TOTAL = items.length;
+const slides = Array.from(track.querySelectorAll('.carousel-item'));
 const TOTAL = items.length;
 
 let current = 0;
 let autoTimer;
 
-/* Crear puntos */
+/* Crear puntos 
 
 items.forEach((_, i) => {
 
@@ -325,13 +335,13 @@ items.forEach((_, i) => {
 
 });
 
-/* Actualizar posición */
+/* Actualizar posición 
 
 function updateCarousel() {
 
   const wrap = track.parentElement;
 
-  const item = items[current];
+  const item = slides[current];
 
   const wrapCenter =
     wrap.clientWidth / 2;
@@ -356,14 +366,42 @@ function updateCarousel() {
     });
 
 }
+track.addEventListener('transitionend', () => {
 
-/* Cambiar slide */
+  if (current === 0) {
+
+    track.style.transition = 'none';
+
+    current = TOTAL;
+
+    updateCarousel();
+
+    requestAnimationFrame(() => {
+      track.style.transition = 'transform 0.5s ease';
+    });
+  }
+
+  if (current === TOTAL + 1) {
+
+    track.style.transition = 'none';
+
+    current = 1;
+
+    updateCarousel();
+
+    requestAnimationFrame(() => {
+      track.style.transition = 'transform 0.5s ease';
+    });
+  }
+
+});
+/* Cambiar slide 
 
 function goTo(index, auto = false) {
 
-  current =
-    (index + TOTAL) % TOTAL;
-
+  //current =(index + TOTAL) % TOTAL;
+  
+ current = index;
   updateCarousel();
 
   if (!auto) {
@@ -372,7 +410,7 @@ function goTo(index, auto = false) {
 
 }
 
-/* Flechas */
+/* Flechas 
 
 prevBtn.addEventListener(
   'click',
@@ -384,7 +422,7 @@ nextBtn.addEventListener(
   () => goTo(current + 1)
 );
 
-/* Autoplay */
+/* Autoplay 
 
 function restartAutoPlay() {
 
@@ -398,7 +436,7 @@ function restartAutoPlay() {
 
 }
 
-/* Swipe móvil */
+/* Swipe móvil 
 
 let startX = 0;
 
@@ -427,14 +465,14 @@ track.addEventListener(
   }
 );
 
-/* Recentrar al redimensionar */
+/* Recentrar al redimensionar 
 
 window.addEventListener(
   'resize',
   updateCarousel
 );
 
-/* Inicializar */
+/* Inicializar 
 
 window.addEventListener(
   'load',
@@ -442,7 +480,7 @@ window.addEventListener(
     updateCarousel();
     restartAutoPlay();
   }
-);
+);*/
   /* ── Carousel ── 
   const track    = document.getElementById('carouselTrack');
   const items    = Array.from(track.querySelectorAll('.carousel-item'));
@@ -511,6 +549,227 @@ window.addEventListener(
   goTo(0);
   */
 </script>
+//scriptcarrousel
+
+<script>
+/*const track    = document.getElementById('carouselTrack');
+const dotsWrap = document.getElementById('carouselDots');
+const prevBtn  = document.getElementById('prevBtn');
+const nextBtn  = document.getElementById('nextBtn');
+
+const realItems = Array.from(track.querySelectorAll('.carousel-item'));
+const TOTAL     = realItems.length;
+
+// clon del primero al final, clon del último al principio
+const firstClone = realItems[0].cloneNode(true);
+const lastClone  = realItems[TOTAL - 1].cloneNode(true);
+track.appendChild(firstClone);
+track.insertBefore(lastClone, track.firstChild);
+
+const slides = Array.from(track.querySelectorAll('.carousel-item'));
+
+let current = 1;
+let locked  = false;
+let autoTimer;
+
+realItems.forEach((_, i) => {
+  const d = document.createElement('button');
+  d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+  d.setAttribute('aria-label', `Go to slide ${i + 1}`);
+  d.addEventListener('click', () => goTo(i + 1));
+  dotsWrap.appendChild(d);
+});
+
+function getOffset() {
+  const wrap       = track.parentElement;
+  const item       = slides[current];
+  const wrapCenter = wrap.clientWidth / 2;
+  const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+  return wrapCenter - itemCenter;
+}
+
+function updateDots() {
+  const realIdx = (current - 1 + TOTAL) % TOTAL;
+  dotsWrap.querySelectorAll('.carousel-dot')
+    .forEach((d, i) => d.classList.toggle('active', i === realIdx));
+}
+
+function setPosition(animate) {
+  track.style.transition = animate ? 'transform 0.5s ease' : 'none';
+  track.style.transform  = `translateX(${getOffset()}px)`;
+  updateDots();
+}
+
+track.addEventListener('transitionend', (e) => {
+  if (e.propertyName !== 'transform') return;
+
+  // llegamos al clon del último (yendo hacia atrás desde slide 1)
+  if (current === 0) {
+    track.style.transition = 'none';
+    current = TOTAL;
+    track.style.transform = `translateX(${getOffset()}px)`;
+    updateDots();
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      track.style.transition = 'transform 0.5s ease';
+      locked = false;
+    }));
+  // llegamos al clon del primero (yendo hacia adelante desde slide 4)
+  } else if (current === TOTAL + 1) {
+    track.style.transition = 'none';
+    current = 1;
+    track.style.transform = `translateX(${getOffset()}px)`;
+    updateDots();
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      track.style.transition = 'transform 0.5s ease';
+      locked = false;
+    }));
+  } else {
+    locked = false;
+  }
+});
+
+function goTo(idx, auto = false) {
+  if (locked) return;
+  locked  = true;
+  current = idx;
+  setPosition(true);
+  if (!auto) resetAuto();
+}
+
+prevBtn.addEventListener('click', () => goTo(current - 1));
+nextBtn.addEventListener('click', () => goTo(current + 1));
+
+function resetAuto() {
+  clearInterval(autoTimer);
+  autoTimer = setInterval(() => goTo(current + 1, true), 3000);
+}
+
+let startX = 0;
+track.addEventListener('pointerdown', e => { startX = e.clientX; });
+track.addEventListener('pointerup',   e => {
+  const delta = e.clientX - startX;
+  if (delta > 50)  goTo(current - 1);
+  if (delta < -50) goTo(current + 1);
+});
+
+window.addEventListener('resize', () => setPosition(false));
+
+setPosition(false);
+requestAnimationFrame(() => requestAnimationFrame(() => {
+  track.style.transition = 'transform 0.5s ease';
+  locked = false;
+  resetAuto();
+}));*/
+
+const track    = document.getElementById('carouselTrack');
+const dotsWrap = document.getElementById('carouselDots');
+const prevBtn  = document.getElementById('prevBtn');
+const nextBtn  = document.getElementById('nextBtn');
+
+const realItems = Array.from(track.querySelectorAll('.carousel-item'));
+const TOTAL     = realItems.length;
+
+// un clon del primero al final, un clon del último al principio
+const firstClone = realItems[0].cloneNode(true);
+const lastClone  = realItems[TOTAL - 1].cloneNode(true);
+
+track.appendChild(firstClone);
+track.insertBefore(lastClone, track.firstChild);
+
+const slides = Array.from(track.querySelectorAll('.carousel-item'));
+
+let current = 1;
+let locked  = false;
+let autoTimer;
+
+realItems.forEach((_, i) => {
+  const d = document.createElement('button');
+  d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+  d.setAttribute('aria-label', `Go to slide ${i + 1}`);
+  d.addEventListener('click', () => goTo(i + 1));
+  dotsWrap.appendChild(d);
+});
+
+function getOffset() {
+  const wrap       = track.parentElement;
+  const item       = slides[current];
+  const wrapCenter = wrap.clientWidth / 2;
+  const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+  return wrapCenter - itemCenter;
+}
+
+function updateDots() {
+  const realIdx = (current - 1 + TOTAL) % TOTAL;
+  dotsWrap.querySelectorAll('.carousel-dot')
+    .forEach((d, i) => d.classList.toggle('active', i === realIdx));
+}
+
+function setPosition(animate) {
+  track.style.transition = animate ? 'transform 0.5s ease' : 'none';
+  track.style.transform  = `translateX(${getOffset()}px)`;
+  updateDots();
+}
+
+track.addEventListener('transitionend', (e) => {
+  if (e.propertyName !== 'transform') return;
+
+  if (current === 0) {
+    track.style.transition = 'none';
+    current = TOTAL;
+    track.style.transform = `translateX(${getOffset()}px)`;
+    updateDots();
+    // fuerza un reflow para que el navegador "registre" el salto
+    // sin animación antes de reactivar la transición
+    track.offsetHeight;
+    track.style.transition = 'transform 0.5s ease';
+    locked = false;
+
+  } else if (current === TOTAL + 1) {
+    track.style.transition = 'none';
+    current = 1;
+    track.style.transform = `translateX(${getOffset()}px)`;
+    updateDots();
+    track.offsetHeight;
+    track.style.transition = 'transform 0.5s ease';
+    locked = false;
+
+  } else {
+    locked = false;
+  }
+});
+
+function goTo(idx, auto = false) {
+  if (locked) return;
+  locked  = true;
+  current = idx;
+  setPosition(true);
+  if (!auto) resetAuto();
+}
+
+prevBtn.addEventListener('click', () => goTo(current - 1));
+nextBtn.addEventListener('click', () => goTo(current + 1));
+
+function resetAuto() {
+  clearInterval(autoTimer);
+  autoTimer = setInterval(() => goTo(current + 1, true), 3000);
+}
+
+let startX = 0;
+track.addEventListener('pointerdown', e => { startX = e.clientX; });
+track.addEventListener('pointerup',   e => {
+  const delta = e.clientX - startX;
+  if (delta > 50)  goTo(current - 1);
+  if (delta < -50) goTo(current + 1);
+});
+
+window.addEventListener('resize', () => setPosition(false));
+
+setPosition(false);
+locked = false;
+resetAuto();
+
+</script>
+
 
 </body>
 </html>
