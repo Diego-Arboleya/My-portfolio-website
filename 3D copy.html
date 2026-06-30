@@ -21,23 +21,7 @@
     html { scroll-behavior: smooth; }
     body { background: var(--dark); color: var(--text); font-family: 'Josefin Sans', Helvetica, sans-serif; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
 
-    /* ─── HEADER ─── 
-    header { position: fixed; top: 0; left: 0; right: 0; z-index: 300; background: var(--text); height: var(--nav-h); }
-    .header-inner { height: var(--nav-h); padding: 0 var(--gap); display: flex; align-items: center; justify-content: space-between; }
-    nav ul { list-style: none; display: flex; gap: clamp(1rem, 2.5vw, 2.2rem); }
-    .logo { font-family: 'Italiana', Georgia, serif; font-weight: 600; font-size: 2.85rem; color: var(--dark); letter-spacing: 0.04em; text-decoration: none; }
-    nav a { color: var(--orange); text-decoration: none; font-family: 'Josefin Sans', Helvetica, sans-serif; font-size: clamp(0.75rem, 1vw, 0.95rem); font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase; transition: opacity 0.2s; text-shadow: 0.3px 0 0 currentColor, -0.3px 0 0 currentColor; }
-    nav a:hover { opacity: 0.7; }
-
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
-    .hamburger span { display: block; width: 24px; height: 2px; background: var(--orange); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-    .mobile-menu { display: none; position: fixed; top: var(--nav-h); left: 0; right: 0; z-index: 299; background: var(--text); padding: 0.8rem var(--gap) 1.2rem; flex-direction: column; gap: 1rem; }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { color: var(--orange); text-decoration: none; font-family: 'Josefin Sans', Helvetica, sans-serif; font-size: 0.9rem; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; }
-    */
+    
     /* ───────────────── HEADER 2───────────────── */
 
 header{
@@ -146,16 +130,7 @@ nav li:nth-child(5){
 nav a:hover{
     transform:translateX(-20px);
 }
-/* hamburguesa */
- /*.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
-    .hamburger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-    .mobile-menu { display: none; position: fixed; top: var(--nav-h); left: 0; right: 0; z-index: 299; background: var(--text); padding: 0.8rem var(--gap) 1.2rem; flex-direction: column; gap: 1rem; }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { color: var(--orange); text-decoration: none; font-family: 'Josefin Sans', Helvetica, sans-serif; font-size: 0.9rem; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; }
-  */ 
+
 .hamburger{
 
     display:none;
@@ -287,21 +262,6 @@ nav a:hover{
 
     }
 
-  /*  .carousel-track {
-      display: flex;
-      gap: clamp(12px, 2vw, 28px);
-      transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-      will-change: transform;
-    }
-
-     Each card: fixed width so multiple are visible 
-    .carousel-item {
-      flex: 0 0 clamp(260px, 52vw, 580px);
-      display: flex;
-      flex-direction: column;
-      text-decoration: none;
-      cursor: pointer;
-    }*/
     .carousel-track {
   display: flex;
   gap:clamp(30px, 4vw, 60px);
@@ -420,10 +380,10 @@ nav a:hover{
     <nav>
       <ul>
         <!--<li><a href="index.html">Home</a></li>-->
-        <li><a href="environment.html">Environment Art</a></li>
-        <!--<li><a href="Tools.html">Tools</a></li>-->
-        <li><a href="shaders.html">Shaders</a></li>
         <li><a href="mocap.html">Mocap</a></li>
+        <!--<li><a href="Tools.html">Tools</a></li>-->
+        <li><a href="3D.html">3D</a></li>
+        <li><a href="shaders.html">Technical Art</a></li>
       </ul>
     </nav>
     <button class="hamburger" id="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
@@ -432,11 +392,10 @@ nav a:hover{
 
 <div class="mobile-menu" id="mobileMenu">
   <a href="index.html" class="mobile-logo">D.A.M</a>
-  <a href="index.html">Home</a>
-  <a href="environment.html">Environment Art</a>
-  <a href="Tools.html">Tools</a>
-  <a href="shaders.html">Shaders</a>
   <a href="mocap.html">Mocap</a>
+  <a href="3D.html">3D</a>
+  <a href="shaders.html">Shaders</a>
+  
 </div>
 
 <div class="page-body">
@@ -519,376 +478,10 @@ nav a:hover{
   window.addEventListener('load',   updatePositions);
   window.addEventListener('resize', updatePositions);
   window.addEventListener('scroll', updatePositions, { passive: true });
-
-  /* ── Carousel 2── 
-
-/*const track = document.getElementById('carouselTrack');
-const items = Array.from(track.querySelectorAll('.carousel-item'));
-/*--infinite--
-const firstClone = items[0].cloneNode(true);
-const lastClone = items[items.length - 1].cloneNode(true);
-
-track.appendChild(firstClone);
-track.insertBefore(lastClone, track.firstChild);
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const dotsWrap = document.getElementById('carouselDots');
-
-//const TOTAL = items.length;
-const slides = Array.from(track.querySelectorAll('.carousel-item'));
-const TOTAL = items.length;
-
-let current = 0;
-let autoTimer;
-
-/* Crear puntos 
-
-items.forEach((_, i) => {
-
-  const dot = document.createElement('button');
-
-  dot.className =
-    'carousel-dot' +
-    (i === 0 ? ' active' : '');
-
-  dot.setAttribute(
-    'aria-label',
-    `Go to slide ${i + 1}`
-  );
-
-  dot.addEventListener('click', () => {
-    goTo(i);
-  });
-
-  dotsWrap.appendChild(dot);
-
-});
-
-/* Actualizar posición 
-
-function updateCarousel() {
-
-  const wrap = track.parentElement;
-
-  const item = slides[current];
-
-  const wrapCenter =
-    wrap.clientWidth / 2;
-
-  const itemCenter =
-    item.offsetLeft +
-    item.offsetWidth / 2;
-
-  const offset =
-    wrapCenter - itemCenter;
-
-  track.style.transform =
-    `translateX(${offset}px)`;
-
-  dotsWrap
-    .querySelectorAll('.carousel-dot')
-    .forEach((dot, i) => {
-      dot.classList.toggle(
-        'active',
-        i === current
-      );
-    });
-
-}
-track.addEventListener('transitionend', () => {
-
-  if (current === 0) {
-
-    track.style.transition = 'none';
-
-    current = TOTAL;
-
-    updateCarousel();
-
-    requestAnimationFrame(() => {
-      track.style.transition = 'transform 0.5s ease';
-    });
-  }
-
-  if (current === TOTAL + 1) {
-
-    track.style.transition = 'none';
-
-    current = 1;
-
-    updateCarousel();
-
-    requestAnimationFrame(() => {
-      track.style.transition = 'transform 0.5s ease';
-    });
-  }
-
-});
-/* Cambiar slide 
-
-function goTo(index, auto = false) {
-
-  //current =(index + TOTAL) % TOTAL;
-  
- current = index;
-  updateCarousel();
-
-  if (!auto) {
-    restartAutoPlay();
-  }
-
-}
-
-/* Flechas 
-
-prevBtn.addEventListener(
-  'click',
-  () => goTo(current - 1)
-);
-
-nextBtn.addEventListener(
-  'click',
-  () => goTo(current + 1)
-);
-
-/* Autoplay 
-
-function restartAutoPlay() {
-
-  clearInterval(autoTimer);
-
-  autoTimer = setInterval(() => {
-
-    goTo(current + 1, true);
-
-  }, 4000);
-
-}
-
-/* Swipe móvil 
-
-let startX = 0;
-
-track.addEventListener(
-  'pointerdown',
-  e => {
-    startX = e.clientX;
-  }
-);
-
-track.addEventListener(
-  'pointerup',
-  e => {
-
-    const delta =
-      e.clientX - startX;
-
-    if (delta > 50) {
-      goTo(current - 1);
-    }
-
-    if (delta < -50) {
-      goTo(current + 1);
-    }
-
-  }
-);
-
-/* Recentrar al redimensionar 
-
-window.addEventListener(
-  'resize',
-  updateCarousel
-);
-
-/* Inicializar 
-
-window.addEventListener(
-  'load',
-  () => {
-    updateCarousel();
-    restartAutoPlay();
-  }
-);*/
-  /* ── Carousel ── 
-  const track    = document.getElementById('carouselTrack');
-  const items    = Array.from(track.querySelectorAll('.carousel-item'));
-  const prevBtn  = document.getElementById('prevBtn');
-  const nextBtn  = document.getElementById('nextBtn');
-  const dotsWrap = document.getElementById('carouselDots');
-  const TOTAL    = items.length;
-  let current    = 0;
-  let autoTimer;
-
-  /* Build dots 
-  items.forEach((_, i) => {
-    const d = document.createElement('button');
-    d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-    d.setAttribute('aria-label', 'Go to slide ' + (i + 1));
-    d.addEventListener('click', () => goTo(i));
-    dotsWrap.appendChild(d);
-  });
-
-  function goTo(index) {
-    current = ((index % TOTAL) + TOTAL) % TOTAL;
-
-    /* Measure after layout 
-    requestAnimationFrame(() => {
-      const wrapRect  = track.parentElement.getBoundingClientRect();
-      const wrapW     = wrapRect.width;
-      const trackRect = track.getBoundingClientRect();
-      const itemRect  = items[current].getBoundingClientRect();
-
-      /* item center relative to track origin 
-      const itemCenterInTrack = (itemRect.left - trackRect.left) + itemRect.width / 2;
-      /* current translateX 
-      const currentTX = new DOMMatrix(getComputedStyle(track).transform).m41;
-      /* new offset so item center aligns with wrap center 
-      const newTX = -(itemCenterInTrack + currentTX - wrapW / 2 + currentTX);
-
-      /* clamp so we don't over-scroll 
-      const maxScroll = track.scrollWidth - wrapW;
-      const clamped   = Math.min(0, Math.max(-maxScroll, newTX));
-      track.style.transform = 'translateX(' + clamped + 'px)';
-    });
-
-    dotsWrap.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === current));
-    prevBtn.disabled = current === 0;
-    nextBtn.disabled = current === TOTAL - 1;
-    resetAuto();
-  }
-
-  function resetAuto() {
-    clearInterval(autoTimer);
-    autoTimer = setInterval(() => goTo(current === TOTAL - 1 ? 0 : current + 1), 4000);
-  }
-
-  prevBtn.addEventListener('click', () => goTo(current - 1));
-  nextBtn.addEventListener('click', () => goTo(current + 1));
-
-  /* Touch/swipe 
-  let startX = 0;
-  track.addEventListener('pointerdown', e => { startX = e.clientX; });
-  track.addEventListener('pointerup',   e => {
-    const diff = startX - e.clientX;
-    if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
-  });
-
-  window.addEventListener('resize', () => goTo(current));
-  goTo(0);
-  */
 </script>
-//scriptcarrousel
+
 
 <script>
-/*const track    = document.getElementById('carouselTrack');
-const dotsWrap = document.getElementById('carouselDots');
-const prevBtn  = document.getElementById('prevBtn');
-const nextBtn  = document.getElementById('nextBtn');
-
-const realItems = Array.from(track.querySelectorAll('.carousel-item'));
-const TOTAL     = realItems.length;
-
-// clon del primero al final, clon del último al principio
-const firstClone = realItems[0].cloneNode(true);
-const lastClone  = realItems[TOTAL - 1].cloneNode(true);
-track.appendChild(firstClone);
-track.insertBefore(lastClone, track.firstChild);
-
-const slides = Array.from(track.querySelectorAll('.carousel-item'));
-
-let current = 1;
-let locked  = false;
-let autoTimer;
-
-realItems.forEach((_, i) => {
-  const d = document.createElement('button');
-  d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-  d.setAttribute('aria-label', `Go to slide ${i + 1}`);
-  d.addEventListener('click', () => goTo(i + 1));
-  dotsWrap.appendChild(d);
-});
-
-function getOffset() {
-  const wrap       = track.parentElement;
-  const item       = slides[current];
-  const wrapCenter = wrap.clientWidth / 2;
-  const itemCenter = item.offsetLeft + item.offsetWidth / 2;
-  return wrapCenter - itemCenter;
-}
-
-function updateDots() {
-  const realIdx = (current - 1 + TOTAL) % TOTAL;
-  dotsWrap.querySelectorAll('.carousel-dot')
-    .forEach((d, i) => d.classList.toggle('active', i === realIdx));
-}
-
-function setPosition(animate) {
-  track.style.transition = animate ? 'transform 0.5s ease' : 'none';
-  track.style.transform  = `translateX(${getOffset()}px)`;
-  updateDots();
-}
-
-track.addEventListener('transitionend', (e) => {
-  if (e.propertyName !== 'transform') return;
-
-  // llegamos al clon del último (yendo hacia atrás desde slide 1)
-  if (current === 0) {
-    track.style.transition = 'none';
-    current = TOTAL;
-    track.style.transform = `translateX(${getOffset()}px)`;
-    updateDots();
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      track.style.transition = 'transform 0.5s ease';
-      locked = false;
-    }));
-  // llegamos al clon del primero (yendo hacia adelante desde slide 4)
-  } else if (current === TOTAL + 1) {
-    track.style.transition = 'none';
-    current = 1;
-    track.style.transform = `translateX(${getOffset()}px)`;
-    updateDots();
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      track.style.transition = 'transform 0.5s ease';
-      locked = false;
-    }));
-  } else {
-    locked = false;
-  }
-});
-
-function goTo(idx, auto = false) {
-  if (locked) return;
-  locked  = true;
-  current = idx;
-  setPosition(true);
-  if (!auto) resetAuto();
-}
-
-prevBtn.addEventListener('click', () => goTo(current - 1));
-nextBtn.addEventListener('click', () => goTo(current + 1));
-
-function resetAuto() {
-  clearInterval(autoTimer);
-  autoTimer = setInterval(() => goTo(current + 1, true), 3000);
-}
-
-let startX = 0;
-track.addEventListener('pointerdown', e => { startX = e.clientX; });
-track.addEventListener('pointerup',   e => {
-  const delta = e.clientX - startX;
-  if (delta > 50)  goTo(current - 1);
-  if (delta < -50) goTo(current + 1);
-});
-
-window.addEventListener('resize', () => setPosition(false));
-
-setPosition(false);
-requestAnimationFrame(() => requestAnimationFrame(() => {
-  track.style.transition = 'transform 0.5s ease';
-  locked = false;
-  resetAuto();
-}));*/
 
 const track    = document.getElementById('carouselTrack');
 const dotsWrap = document.getElementById('carouselDots');
