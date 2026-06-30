@@ -62,11 +62,13 @@ header{
 .header-inner{
     height: var(--nav-h);
     background-color: var(--text); 
+    border: none;
     display:flex;
     align-items:flex-start;
     justify-content: space-between;
     max-width: 100%;
     width:100%;
+    pointer-events:auto;
 }
 
 /* bloque crema */
@@ -76,6 +78,7 @@ header{
   font-weight: 900; font-size: 6rem; 
   color: var(--text); 
   background-color: var(--dark);
+   height: 78px;
   letter-spacing: 0.04em; 
   text-decoration: none; }
 
@@ -159,7 +162,7 @@ nav a:hover{
 
     margin-left:auto;
 
-    margin-top:18px;
+    margin-top:0px;
     margin-right:20px;
 
     background:none;
@@ -210,6 +213,15 @@ nav a:hover{
     font-weight:900;
     letter-spacing:.15em;
 }
+.mobile-menu .mobile-logo{
+    font-family:'Josefin Sans',sans-serif;
+    font-size:2.6rem;
+    font-weight:900;
+    color:var(--dark);
+    letter-spacing:0.04em;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(0,0,0,0.15);
+}
 
 @media (max-width:700px){
 
@@ -219,15 +231,29 @@ nav a:hover{
     }
 
     .logo{
+        display: flex;
+        width: auto;
+        align-items: center;
+        padding-left: 20px;
+        font-size: 2.6rem;
+        background-color: var(--text);
+        color: var(--dark);
+        flex: 1;
+        align-self: center;
+    }
 
-        width:100%;
-        height:60px;
+    .header-inner{
+        background-color: var(--text);
+        justify-content: space-between;
+        align-items: center;
+        height: var(--nav-h);
+    }
 
-        justify-content:flex-start;
-
-        padding-left:20px;
-
-        font-size:2.6rem;
+    .hamburger span{
+        background: var(--dark);
+    }
+    .header-inner.menu-open .logo{
+        display: none;
     }
 
     .hamburger{
@@ -405,6 +431,7 @@ nav a:hover{
 </header>
 
 <div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" class="mobile-logo">D.A.M</a>
   <a href="index.html">Home</a>
   <a href="environment.html">Environment Art</a>
   <a href="Tools.html">Tools</a>
@@ -473,7 +500,11 @@ nav a:hover{
   /* ── Hamburger ── */
   const hBtn  = document.getElementById('hamburger');
   const hMenu = document.getElementById('mobileMenu');
-  hBtn.addEventListener('click', () => { hBtn.classList.toggle('open'); hMenu.classList.toggle('open'); });
+  hBtn.addEventListener('click', () => {
+    hBtn.classList.toggle('open');
+    hMenu.classList.toggle('open');
+    document.querySelector('.header-inner').classList.toggle('menu-open');
+  });
 
   /* ── Accent bar ── */
   const accentR = document.getElementById('accentRight');
