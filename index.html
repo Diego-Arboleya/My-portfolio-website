@@ -9,6 +9,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
+       --teal: #1a757b;
       --rust:  #a8442b;
       --gold:  #f4b324;
       --dark:  #1c191a;
@@ -28,7 +29,7 @@
 
     .title-font { font-family: 'Italiana', Georgia, serif; }
 
-    /* ─── HEADER ─── */
+    /* ─── HEADER ─── 
     header {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -56,7 +57,7 @@
     }
     nav a:hover { opacity: 0.7; }
 
-    /* Hamburger */
+    /* Hamburger 
     .hamburger {
       display: none; flex-direction: column; gap: 5px;
       cursor: pointer; background: none; border: none; padding: 4px;
@@ -86,6 +87,175 @@
     }
 
     /* ─── PAGE BODY ─── */
+      /* ───────────────── HEADER 2───────────────── */
+
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    max-width: 100%;
+    height: var(--nav-h);
+    z-index:300;
+
+    display:flex;
+    /*align-items:flex-start;*/
+
+    pointer-events:none;
+
+    background:transparent;
+}
+/* contenedor del logo */
+.header-inner{
+    height: var(--nav-h);
+    background-color: var(--text); 
+    border: none;
+    display:flex;
+    align-items:flex-start;
+    justify-content: space-between;
+    max-width: 100%;
+    width:100%;
+    pointer-events:auto;
+}
+/* bloque crema */
+.logo { 
+  display:flex;
+  font-family:'Josefin Sans',sans-serif; 
+  font-weight: 900; font-size: 6rem; 
+  color: var(--text); 
+  background-color: var(--dark);
+   height: var(--nav-h);
+  letter-spacing: 0.04em; 
+  text-decoration: none; }
+/* navegación */
+nav{
+    /*margin-top:10px;*/
+    transform:translateX(20px);
+    justify-content:flex-end;
+    height: 100%;
+    float: right;
+    background:var(--text);
+    pointer-events:auto;
+}
+nav ul{
+    justify-content:flex-end;
+    display:flex;
+    flex-direction:column;
+    gap:0px;
+    list-style:none;
+}
+nav li{
+    list-style:none;
+}
+nav a{
+    /*transform:translateX(10px);*/
+    display:flex;
+    align-items:center;
+
+    width:380px;
+    height:24px;
+
+    padding-left:22px;
+
+    border-radius:999px 0px 0px 999px;
+
+    color: white;
+
+    text-decoration:none;
+
+    text-transform:uppercase;
+
+    font-family:'Josefin Sans',sans-serif;
+    font-size:.9rem;
+    font-weight:900;
+
+    letter-spacing:.18em;
+
+    transition:.18s;
+}
+nav li:nth-child(1) a{
+    background:var(--rust);
+}
+nav li:nth-child(2) a{
+    background:var(--gold);
+  
+}
+nav li:nth-child(3) a{
+    background:var(--teal);
+}
+nav li:nth-child(4),
+nav li:nth-child(5){
+    display:none;
+}
+nav a:hover{
+    transform:translateX(-20px);
+}
+.hamburger{
+
+    display:none;
+
+    margin-left:auto;
+
+    margin-top:0px;
+    margin-right:20px;
+
+    background:none;
+
+    border:none;
+
+    cursor:pointer;
+
+    flex-direction:column;
+
+    gap:5px;
+
+    pointer-events:auto;
+}
+.hamburger span{
+    width:24px;
+    height:2px;
+    background:var(--dark);
+    transition:.3s;
+}
+.hamburger.open span:nth-child(1){
+    transform:translateY(7px) rotate(45deg);
+}
+.hamburger.open span:nth-child(2){
+    opacity:0;
+}
+.hamburger.open span:nth-child(3){
+    transform:translateY(-7px) rotate(-45deg);
+}
+/* menú móvil */
+.mobile-menu{
+    display:none;
+    position:fixed;
+    inset:0;
+    padding:80px 30px;
+    background:var(--text);
+    flex-direction:column;
+    gap:18px;
+    z-index:299;
+}
+.mobile-menu.open{
+    display:flex;
+}
+.mobile-menu a{
+    color:var(--rust);
+    text-decoration:none;
+    text-transform:uppercase;
+    font-weight:900;
+    letter-spacing:.15em;
+}
+.mobile-menu .mobile-logo{
+    font-family:'Josefin Sans',sans-serif;
+    font-size:2.6rem;
+    font-weight:900;
+    color:var(--dark);
+    letter-spacing:0.04em;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(0,0,0,0.15);
+}
     .page-body { padding-top: var(--nav-h); }
 
     /* ─── HERO — fixed 420px, crops sides ─── */
@@ -204,39 +374,72 @@
     }
     footer p { font-family: 'Josefin Sans', Helvetica, sans-serif; font-size: 0.75rem; font-weight: 700; color: var(--dark); line-height: 1.75; }
     footer a { color: var(--dark); text-decoration: underline; }
+    /*--header media--*/
+    @media (max-width:700px){
 
-    @media (max-width: 700px) {
-      nav ul { display: none; }
-      .hamburger { display: flex; }
+    nav{
+
+        display:none;
     }
+
+    .logo{
+        display: flex;
+        width: auto;
+        align-items: center;
+        padding-left: 20px;
+        font-size: 2.6rem;
+        background-color: var(--text);
+        color: var(--dark);
+        flex: 1;
+        align-self: center;
+    }
+
+    .header-inner{
+        background-color: var(--text);
+        justify-content: space-between;
+        align-items: center;
+        height: var(--nav-h);
+    }
+
+    .hamburger span{
+        background: var(--dark);
+    }
+    .header-inner.menu-open .logo{
+        display: none;
+    }
+
+    .hamburger{
+
+        display:flex;
+    }
+
+}
+
   </style>
 </head>
 <body>
 
 <header>
   <div class="header-inner">
-    <a class="logo">D.A.M</a>
+    <a href="index.html" class="logo">D.A.M</a>
     <nav>
       <ul>
-        <li><a href="3D.html">3D</a></li>
-        <li><a href="environment.html">Environment Art</a></li>
-        <li><a href="Tools.html">Tools</a></li>
-        <li><a href="shaders.html">Shaders</a></li>
+        <!--<li><a href="index.html">Home</a></li>-->
         <li><a href="mocap.html">Mocap</a></li>
+        <!--<li><a href="Tools.html">Tools</a></li>-->
+        <li><a href="3D.html">3D</a></li>
+        <li><a href="Tech_Art.html">Technical Art</a></li>
       </ul>
     </nav>
-    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
   </div>
 </header>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="3D.html">3D</a>
-  <a href="environment.html">Environment Art</a>
-  <a href="Tools.html">Tools</a>
-  <a href="shaders.html">Shaders</a>
+  <a href="index.html" class="mobile-logo">D.A.M</a>
   <a href="mocap.html">Mocap</a>
+  <a href="3D.html">3D</a>
+  <a href="Tech_Art.html">Technical Art</a>
 </div>
 
 <div class="page-body">
@@ -297,31 +500,32 @@
   </footer>
 
 </div>
-
+/*hamnburguer*/
 <script>
   /* ── Hamburger ── */
   const hBtn  = document.getElementById('hamburger');
   const hMenu = document.getElementById('mobileMenu');
-  hBtn.addEventListener('click', () => { hBtn.classList.toggle('open'); hMenu.classList.toggle('open'); });
-  hMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    hBtn.classList.remove('open'); hMenu.classList.remove('open');
-  }));
+  hBtn.addEventListener('click', () => {
+    hBtn.classList.toggle('open');
+    hMenu.classList.toggle('open');
+    document.querySelector('.header-inner').classList.toggle('menu-open');
+  });
 
-  const accentR   = document.getElementById('accentRight');
-  const wrapper   = document.getElementById('mainWrapper');
-  const whatTitle = document.getElementById('whatTitle');
-
+  /* ── Accent bar ── */
+  const accentR = document.getElementById('accentRight');
+  const wrapper = document.getElementById('mainWrapper');
   function updatePositions() {
     const wRect = wrapper.getBoundingClientRect();
-    const tRect = whatTitle.getBoundingClientRect();
+    const titleEl = document.querySelector('.page-title');
+    const tRect = titleEl.getBoundingClientRect();
     accentR.style.top    = (tRect.top - wRect.top) + 'px';
-    accentR.style.height = tRect.height + 'px';
+    accentR.style.height = tRect.height * 0.18 + 'px';
   }
-
   window.addEventListener('load',   updatePositions);
   window.addEventListener('resize', updatePositions);
   window.addEventListener('scroll', updatePositions, { passive: true });
 </script>
+
 
 </body>
 </html>
