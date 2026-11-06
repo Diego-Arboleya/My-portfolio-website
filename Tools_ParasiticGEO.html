@@ -136,46 +136,48 @@
       <!-- ── Section 0:head section ── -->
       <div class="shader-section">
             <span class="section-title"></span>
-             <div class="video-wrap">
-       <iframe width="560" height="315" src="https://www.youtube.com/embed/n_f4m0MmA58?si=YROZj8-XlgIvRMWP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
+               <div class="video-wrap">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/n_f4m0MmA58?si=YROZj8-XlgIvRMWP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+               </div>
             
-            <div class="video-wrap">
-          <video controls preload="metadata" style="width:100%;height:100%;display:block;">
-            <source src="HauntedEcologies/UnrealBuildingBreakdown.mp4" type="video/mp4">
-          </video>
-        </div>
-          <div class="video-wrap">
-          <video controls preload="metadata" style="width:100%;height:100%;display:block;">
-            <source src="HauntedEcologies/UnrealMoldBreakdown.mp4" type="video/mp4">
-          </video>
-        </div>  
+             <!-- <div class="video-wrap">
+               <video controls preload="metadata" style="width:100%;height:100%;display:block;">
+               <source src="HauntedEcologies/UnrealBuildingBreakdown.mp4" type="video/mp4">
+               </video>
+              </div>-->
+
+             
            
-           
+      
       <!-- ── Section 1: Tile breaking shader ── -->
       <div class="shader-section">
         <span class="section-title">How it works</span>
-        <p class="section-desc">The tool at the moment works in 2 stages:<br>
-          First, the import and module treatment stage, where the modules are brought in and prepared so that they can work properly with the tool, the modules are separated by type,
-          between corner and wall modules, and diferent types of floors, including the last level for the trim edges. An aditional module for the corners is required, corner temp,
-          this mesh is used to establish the conections of the wall with the corner modules, since the building works by detecting the bounding volume of the input modules and placing them accordingly,
-          so any corner module that has any portusions will not be lined up if a temporal module is not used.
-          Then all this information is passed to the tool along the floor configurations.
-          <br>The actual tool is fairly simple, the actual complexity comes from the corner overrides and roof generation.
-          <br>The initial corner temp module is substituted with the corner modules corresponding to each floor accordingly, because the position and alignment has been generated based on the temp mesh,
-          now the corners can be placed and will line up properly regardless of any portrusions or decorations they might contain.
-          <br>The next step is the roof generation, this works by extracting the topmost uncapped edgeloop, first by extracting the trim floor, and then by isolating the edges situated highest 
-          based on a series of groups. After this is done, said edge loop is capped and then uv proyected to match the texel density with the one of the actual modules.
-          It is necessary for the trim modules to line up properly, otherwise the capping won't work properly.
+        <p class="section-desc">Mold tool refactor:<br>
+          The mold VFX system had to be refactored to make it optimal for large-scale environment use. Instead of using a single large volume to generate the mold, the system was changed to use multiple smaller volumes that can be placed in the scene and generate mold in a more localized manner.
+          This allows for better control over the distribution of the mold and reduces the overall computational load on the system, as well as making it susceptible to frustum culling and occlusion culling,
+          this wasn't possible with the previous system due to the large extent of the final generated volume.
         </p>
-        <div class="img-row">
-          <div class="img-cell" style="flex-grow: 1"><img src="buildingtool/buildinggenexplanationpt1.png" alt="BUILDING IMPORT STAGE" /></div>
-          <div class="img-cell" style="flex-grow: 1"><img src="buildingtool/buildinggenexplanationpt2.png" alt="BUILDING FLOORS" /></div>
+        <div class="video-wrap">
+            <video controls preload="metadata" style="width:100%;height:100%;display:block;">
+            <source src="HauntedEcologies/UnrealMoldBreakdown.mp4" type="video/mp4">
+            </video>
+        </div> 
+        
+      </div>
+      <div class="shader-section">
+        <p class="section-desc">Building toolrefactor:<br>
+          The building generator tool stayed mostly identical to the original version, with the exception of some minor parameters intended to make the tool usable for large-scale levels. 
+          These changes mostly pertain to the introduction of data-tables that allow the user to define the series of rules, patterns and floor distribution inside static memory.
+          This was done to avoid having to manually type the instruction rules for each building, which would be very time consuming and prone to typing errors.<br>
+          The other major change was the introduction of manual controls for the temp module dimensions, this removes the necessity for having an extra mesh stored in memory solely for the purpose 
+          of reading data. Instead, the user can now define the module dimensions directly in the tool parameters.
+        </p>
+        <div class="video-wrap">
+            <video controls preload="metadata" style="width:100%;height:100%;display:block;">
+            <source src="HauntedEcologies/UnrealBuildingBreakdown.mp4" type="video/mp4">
+            </video>
         </div>
-        <div class="img-row">
-          <div class="img-cell" style="flex-grow: 2.24"><img src="buildingtool/CENTROIDEXPLICATION.png" alt="BUILDING TREATMENT STAGE" /></div>
-          <div class="img-cell" style="flex-grow: 0.93"><img src="buildingtool/roofscatterexplanation.png" alt="BUILDING FLOORS" /></div>
-        </div>
+        
       </div>
     </div>
      
@@ -183,8 +185,7 @@
 
     </div>
 
-    <img id="diagTriangle" src="lower_sphere.png" alt="" aria-hidden="true" />
-
+    
   </div>
 
   <footer>
